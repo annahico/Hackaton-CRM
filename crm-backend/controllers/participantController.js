@@ -1,4 +1,5 @@
 const Participant = require('../models/participant');
+const sendEmail = require('../config/emailService');
 
 exports.createParticipant = async (req, res) => {
     try {

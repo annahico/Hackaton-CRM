@@ -1,4 +1,5 @@
 const Collaborator = require('../models/collaborator');
+const sendEmail = require('../config/emailService');
 
 exports.createCollaborator = async (req, res) => {
     try {

@@ -1,4 +1,5 @@
 const Opportunity = require('../models/opportunity');
+const sendEmail = require('../config/emailService');
 
 exports.createOpportunity = async (req, res) => {
     try {
