@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useState } from 'react';
+import axios from 'axios';
 
-const CollaboratorForm = () => {
+const CollaboratorForm = ({ fetchCollaborators }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -9,58 +9,74 @@ const CollaboratorForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await axios.post('http://localhost:5000/api/collaborators', { name, email, phone, company });
-        setName('');
-        setEmail('');
-        setPhone('');
-        setCompany('');
+        try {
+            await axios.post('http://localhost:5000/api/collaborators', {
+                name,
+                email,
+                phone,
+                company
+            });
+            fetchCollaborators(); // Actualiza la lista después de agregar un colaborador
+            setName('');
+            setEmail('');
+            setPhone('');
+            setCompany('');
+        } catch (error) {
+            console.error("Error adding collaborator:", error);
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Añadir Colaborador</h2>
-            <div className="mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Nombre"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                />
+        <div className="card mb-4">
+            <div className="card-header">
+                <h5 className="card-title">Registrar Colaborador</h5>
             </div>
-            <div className="mb-3">
-                <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
+            <div className="card-body">
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label className="form-label">Nombre</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            value={name} 
+                            onChange={(e) => setName(e.target.value)} 
+                            required 
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Email</label>
+                        <input 
+                            type="email" 
+                            className="form-control" 
+                            value={email} 
+                            onChange={(e) => setEmail(e.target.value)} 
+                            required 
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Teléfono</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            value={phone} 
+                            onChange={(e) => setPhone(e.target.value)} 
+                            required 
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label">Empresa</label>
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            value={company} 
+                            onChange={(e) => setCompany(e.target.value)} 
+                            required 
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-warning">Registrar</button>
+                </form>
             </div>
-            <div className="mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Teléfono"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                />
-            </div>
-            <div className="mb-3">
-                <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Empresa"
-                    value={company}
-                    onChange={(e) => setCompany(e.target.value)}
-                    required
-                />
-            </div>
-            <button type="submit" className="btn btn-primary">Añadir Colaborador</button>
-        </form>
+        </div>
     );
 };
 

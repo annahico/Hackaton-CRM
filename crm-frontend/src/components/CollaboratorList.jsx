@@ -6,8 +6,12 @@ const CollaboratorList = () => {
 
     useEffect(() => {
         const fetchCollaborators = async () => {
-            const response = await axios.get('http://localhost:5000/api/collaborators');
-            setCollaborators(response.data);
+            try {
+                const response = await axios.get('http://localhost:5000/api/collaborators');
+                setCollaborators(response.data);
+            } catch (error) {
+                console.error("Error fetching collaborators:", error);
+            }
         };
         fetchCollaborators();
     }, []);
@@ -25,14 +29,20 @@ const CollaboratorList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {collaborators.map((collaborator) => (
-                        <tr key={collaborator._id}>
-                            <td>{collaborator.name}</td>
-                            <td>{collaborator.email}</td>
-                            <td>{collaborator.phone}</td>
-                            <td>{collaborator.company}</td>
+                    {collaborators.length > 0 ? (
+                        collaborators.map((collaborator) => (
+                            <tr key={collaborator._id}>
+                                <td>{collaborator.name}</td>
+                                <td>{collaborator.email}</td>
+                                <td>{collaborator.phone}</td>
+                                <td>{collaborator.company}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="4">No hay colaboradores registrados.</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
         </div>

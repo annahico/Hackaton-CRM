@@ -6,8 +6,12 @@ const OpportunityList = () => {
 
     useEffect(() => {
         const fetchOpportunities = async () => {
-            const response = await axios.get('http://localhost:5000/api/opportunities');
-            setOpportunities(response.data);
+            try {
+                const response = await axios.get('http://localhost:5000/api/opportunities');
+                setOpportunities(response.data);
+            } catch (error) {
+                console.error("Error fetching opportunities:", error);
+            }
         };
         fetchOpportunities();
     }, []);
@@ -23,12 +27,18 @@ const OpportunityList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {opportunities.map((opportunity) => (
-                        <tr key={opportunity._id}>
-                            <td>{opportunity.title}</td>
-                            <td>{opportunity.description}</td>
+                    {opportunities.length > 0 ? (
+                        opportunities.map((opportunity) => (
+                            <tr key={opportunity._id}>
+                                <td>{opportunity.title}</td>
+                                <td>{opportunity.description}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="2">No hay oportunidades registradas.</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
         </div>
